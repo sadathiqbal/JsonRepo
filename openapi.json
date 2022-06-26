@@ -1,0 +1,1232 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "url": "//widget.onramper.com",
+      "description": "Default server"
+    },
+    {
+      "url": "//dev.onramper.com",
+      "description": "Sandbox server"
+    }
+  ],
+  "info": {
+    "description": "This is onramper API documentation.\nYou can find out more about Swagger at\n[https://docs.onramper.com/)\nFor this sample, you can use the api key `special-key` to test the authorization filters.\n\n# Introduction\nThis API is documented in **OpenAPI format** a\n\n# OpenAPI Specification\nThis API is documented in **OpenAPI format** \n\n# Cross-Origin Resource Sharing\nThis API features Cross-Origin Resource Sharing (CORS) implemented in compliance with  [W3C spec](https://www.w3.org/TR/cors/).\nAnd that allows cross-domain communication from the browser.\nAll responses have a wildcard same-origin which makes them completely public and accessible to everyone, including any code on any site.\n\n# Authentication\n\n  - API Key\n  - OAuth2\nOAuth2 - an open protocol to allow secure authorization in a simple\nand standard method from web, mobile and desktop applications.\n\n<SecurityDefinitions />\n",
+    "version": "1.0.0",
+    "title": "Onramper API Documentation",
+    "termsOfService": "https://onramper.com/terms-of-use/",
+    "contact": {
+      "name": "API Support",
+      "email": "support@onramper.com",
+      "url": "https://onramper.com/about/"
+    },
+    "x-logo": {
+      "url": "https://onramper.com/wp-content/uploads/2020/06/cropped-Onramper-Logo-2.png",
+      "altText": "onramper logo"
+    }
+  },
+  "externalDocs": {
+    "description": "Find out how to integrate onramper API",
+    "url": "https://docs.onramper.com/"
+  },
+  "tags": [
+    {
+      "name": "rate",
+      "description": "currency rate related metadata"
+    },
+    {
+      "name": "session",
+      "description": "user session data save and validation"
+    },
+    {
+      "name": "gateway",
+      "description": "gateway related metadata"
+    }
+  ],
+  "paths": {
+    "/rate": {
+      "parameters": [
+        {
+          "name": "Accept-Language",
+          "in": "header",
+          "description": "The language you prefer for messages. Supported values are en-AU, en-CA, en-GB, en-US",
+          "example": "en-US",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "default": "en-AU"
+          }
+        },
+        {
+          "name": "cookieParam",
+          "in": "cookie",
+          "description": "Some cookie",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      ]
+    },
+    "/rate{fromCurrency}/{toCurrency}": {
+      "get": {
+        "tags": [
+          "rate"
+        ],
+        "summary": "Find rates for given from and to currencies",
+        "description": "Returns a set of rates by gateway",
+        "operationId": "getRatesByFromToCurrency",
+        "parameters": [
+          {
+            "name": "fromCurrency",
+            "in": "path",
+            "description": "from currency",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "toCurrency",
+            "in": "path",
+            "description": "to currency",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rate"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rate"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid currencies supplied"
+          },
+          "404": {
+            "description": "Rates not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/rate{fromCurrency}/{toCurrency}/{gatewayId}": {
+      "get": {
+        "tags": [
+          "rate"
+        ],
+        "summary": "Find rates for given from and to currencies by gateway",
+        "description": "Returns a set of rates for a specific gateway",
+        "operationId": "getRatesByFromToCurrencyGaetwayId",
+        "parameters": [
+          {
+            "name": "fromCurrency",
+            "in": "path",
+            "description": "from currency",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "toCurrency",
+            "in": "path",
+            "description": "to currency",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "gatewayId",
+            "in": "path",
+            "description": "gateway id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rate"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rate"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid currencies supplied"
+          },
+          "404": {
+            "description": "Rates not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/rate/recommended/{fromCurrency}/{toCurrency}/{countryId}": {
+      "get": {
+        "tags": [
+          "rate"
+        ],
+        "summary": "Find rates for given from and to currencies by recommended gateway",
+        "description": "Returns a set of rates by recommended gateway based on country,fromcurrency and tocurrency specific gateway",
+        "operationId": "getRecommendedGatewayRates",
+        "parameters": [
+          {
+            "name": "fromCurrency",
+            "in": "path",
+            "description": "from currency",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "toCurrency",
+            "in": "path",
+            "description": "to currency",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "countryId",
+            "in": "path",
+            "description": "country id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rate"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rate"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid currencies supplied"
+          },
+          "404": {
+            "description": "Rates not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/session": {
+      "post": {
+        "tags": [
+          "session"
+        ],
+        "summary": "Save session data",
+        "description": "to save session related metadata",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Session"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "inserted data valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "sessionId": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "session"
+        ],
+        "summary": "update session data",
+        "description": "to update session related metadata",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Session"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "inserted data valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "sessionId": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/gateways": {
+      "get": {
+        "tags": [
+          "gateway"
+        ],
+        "summary": "Returns all gateway meta information",
+        "description": "Returns all meta information for all gateways",
+        "operationId": "getGateways",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Gateways"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Gateways"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "gateway not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/gateways/{gatewayId}": {
+      "get": {
+        "tags": [
+          "gateway"
+        ],
+        "summary": "Returns given gateway meta information",
+        "description": "Returns all meta information for given gateways",
+        "operationId": "getGatewayById",
+        "parameters": [
+          {
+            "name": "gatewayId",
+            "in": "path",
+            "description": "gateway id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Gateway"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Gateway"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "gateway not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/gateways/{gatewayId}/{countryCode}": {
+      "get": {
+        "tags": [
+          "gateway"
+        ],
+        "summary": "Returns given gateway meta information by country",
+        "description": "Returns all meta information for given gateways by country",
+        "operationId": "getGatewayByIdByCountry",
+        "parameters": [
+          {
+            "name": "gatewayId",
+            "in": "path",
+            "description": "gateway id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "countryCode",
+            "in": "path",
+            "description": "country ISO code",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Gateway"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Gateway"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "gateway not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/gateways/{gatewayId}/{countryCode}/{currencyId}": {
+      "get": {
+        "tags": [
+          "gateway"
+        ],
+        "summary": "Returns given gateway meta information by country by currency",
+        "description": "Returns all meta information for given gateways by country by currency",
+        "operationId": "getGatewayByIdByCountryByCurrency",
+        "parameters": [
+          {
+            "name": "gatewayId",
+            "in": "path",
+            "description": "gateway id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "countryCode",
+            "in": "path",
+            "description": "country ISO code",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "currencyId",
+            "in": "path",
+            "description": "fiat or crypto currency Id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GatewayCurrency"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/GatewayCurrency"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "gateway not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/supported/currencies/{countryCode}/{currencyId}": {
+      "get": {
+        "tags": [
+          "supported"
+        ],
+        "summary": "Returns given currency information by country by currency",
+        "description": "Returns given currency information by country by currency",
+        "operationId": "getSupportedCurrncyById",
+        "parameters": [
+          {
+            "name": "countryCode",
+            "in": "path",
+            "description": "country ISO code",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "currencyId",
+            "in": "path",
+            "description": "currency id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportedCrypto"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportedCrypto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "currency not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/supported/currencies": {
+      "get": {
+        "tags": [
+          "supported"
+        ],
+        "summary": "Returns all curerncy meta information",
+        "description": "Returns all curerncy meta information",
+        "operationId": "getSupportedCurrencies",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "currencyId": {
+                        "description": "currency ID",
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Id"
+                          }
+                        ]
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "crypto currency name"
+                      },
+                      "identifier": {
+                        "type": "string",
+                        "description": "crypto currency identifier"
+                      },
+                      "supportedGateways": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "properties": {
+                            "gatewayId": {
+                              "type": "string"
+                            }
+                          },
+                          "example": "MPY"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportedCrypto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/supported/paymentMethods/{countryCode}/{paymentMethodId}": {
+      "get": {
+        "tags": [
+          "supported"
+        ],
+        "summary": "Returns given meta information for payment methods by country by payment methods",
+        "description": "Returns given meta information for payment methods by country by payment methods",
+        "operationId": "getPaymentMethodById",
+        "parameters": [
+          {
+            "name": "countryCode",
+            "in": "path",
+            "description": "country ISO code",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "paymentMethodId",
+            "in": "path",
+            "description": "gateway id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GatewayCurrency"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/GatewayCurrency"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "payment method not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/supported/paymentMethods": {
+      "get": {
+        "tags": [
+          "supported"
+        ],
+        "summary": "Returns given meta information for all payment methods",
+        "description": "Returns given meta information for all payment methods",
+        "operationId": "getPaymentMethods",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GatewayCurrency"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/GatewayCurrency"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/meta/{countryCode}/{currencyId}": {
+      "get": {
+        "tags": [
+          "supported"
+        ],
+        "summary": "Returns given meta information by country by currency",
+        "description": "Returns all meta information for by country by currency",
+        "operationId": "getMeta",
+        "parameters": [
+          {
+            "name": "countryCode",
+            "in": "path",
+            "description": "country ISO code",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "currencyId",
+            "in": "path",
+            "description": "fiat or crypto currency Id",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GatewayCurrency"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/GatewayCurrency"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "gateway not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "GatewayRate": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "gateway ID",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Id"
+              }
+            ]
+          },
+          "name": {
+            "description": "Gateway name",
+            "type": "string",
+            "minLength": 1
+          },
+          "quotedRate": {
+            "description": "quoted rate",
+            "type": "number",
+            "format": "double",
+            "minLength": 1,
+            "example": 12.387
+          },
+          "fees": {
+            "description": "onramper and reated fees",
+            "type": "number",
+            "format": "double",
+            "minLength": 1,
+            "example": 1.2387
+          },
+          "duration": {
+            "description": "time data for the rates",
+            "type": "object",
+            "properties": {
+              "fetchedTime": {
+                "type": "string",
+                "format": "date-time",
+                "description": "time the rate was fetched on"
+              },
+              "validityPeriod": {
+                "type": "integer",
+                "example": 1500,
+                "description": "validity period of the rate in seconds"
+              }
+            }
+          },
+          "recommended": {
+            "description": "gateway recommended or not",
+            "type": "boolean"
+          },
+          "cheapest": {
+            "description": "gateway cheapest rate or not",
+            "type": "boolean"
+          }
+        },
+        "xml": {
+          "name": "GatewayRate"
+        }
+      },
+      "SupportedPaymentMethods": {
+        "type": "object",
+        "properties": {
+          "paymentTypeId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Id"
+              }
+            ]
+          },
+          "paymentTypeName": {
+            "type": "string",
+            "description": "name of the payment method",
+            "enum": [
+              "creditCard",
+              "applePay",
+              "wireTransfer"
+            ]
+          },
+          "min": {
+            "type": "integer",
+            "description": "minimum supported currency amount"
+          },
+          "max": {
+            "type": "integer",
+            "description": "maximum supported currency amount"
+          }
+        }
+      },
+      "SupportedCrypto": {
+        "type": "object",
+        "properties": {
+          "cryptoId": {
+            "description": "crypto currency ID",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Id"
+              }
+            ]
+          },
+          "name": {
+            "type": "string",
+            "description": "crypto currency name"
+          },
+          "identifier": {
+            "type": "string",
+            "description": "crypto currency identifier"
+          },
+          "paymentMethods": {
+            "type": "array",
+            "description": "supported payment methods",
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/SupportedPaymentMethods"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "SupportedFiat": {
+        "type": "object",
+        "properties": {
+          "fiatId": {
+            "description": "fiat currency ID",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Id"
+              }
+            ]
+          },
+          "name": {
+            "type": "string",
+            "description": "fiat currency name"
+          },
+          "identifier": {
+            "type": "string",
+            "description": "fiat currency identifier"
+          },
+          "paymentMethods": {
+            "type": "array",
+            "description": "supported payment methods",
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/SupportedPaymentMethods"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "Countries": {
+        "type": "object",
+        "properties": {
+          "countryIsoID": {
+            "description": "country ID",
+            "example": "NLD"
+          },
+          "name": {
+            "type": "string",
+            "description": "fiat currency name",
+            "example": "Netherlands"
+          }
+        }
+      },
+      "GatewayCurrency": {
+        "type": "object",
+        "properties": {
+          "gatewayId": {
+            "description": "Gateway ID",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Id"
+              }
+            ]
+          },
+          "gatewayName": {
+            "type": "string"
+          },
+          "supportedCryptoCurrencies": {
+            "type": "array",
+            "description": "Order Status",
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/SupportedCrypto"
+                }
+              ]
+            }
+          }
+        },
+        "xml": {
+          "name": "GatewayCurrency"
+        }
+      },
+      "Gateway": {
+        "type": "object",
+        "properties": {
+          "gatewayId": {
+            "description": "Gateway ID",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Id"
+              }
+            ]
+          },
+          "gatewayName": {
+            "type": "string"
+          },
+          "supportedCryptoCurrencies": {
+            "type": "array",
+            "description": "List of supported cryptos",
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/SupportedCrypto"
+                }
+              ]
+            }
+          },
+          "supportedFiatCurrencies": {
+            "type": "array",
+            "description": "List of supported fiat's",
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/SupportedFiat"
+                }
+              ]
+            }
+          },
+          "supportedCountries": {
+            "type": "array",
+            "description": "List of supoprted countries",
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Countries"
+                }
+              ]
+            }
+          }
+        },
+        "xml": {
+          "name": "Gateway"
+        }
+      },
+      "Gateways": {
+        "type": "array",
+        "description": "rates by gateways",
+        "items": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/Gateway"
+            }
+          ]
+        }
+      },
+      "Session": {
+        "type": "object",
+        "description": "session data",
+        "properties": {
+          "sessionId": {
+            "description": "unique session data identifier"
+          },
+          "gatewayId": {
+            "description": "identifier for gateway",
+            "type": "number"
+          },
+          "countryIsoID": {
+            "description": "country ID",
+            "example": "NLD"
+          },
+          "fromCurrency": {
+            "type": "string",
+            "description": "identifier for the from currency"
+          },
+          "toCurrency": {
+            "type": "string",
+            "description": "identifier for the from currency"
+          },
+          "fromCurrencyValue": {
+            "type": "number",
+            "format": "double",
+            "description": "value of the from currency"
+          },
+          "paymentType": {
+            "type": "string",
+            "description": "identifier for the payment type",
+            "example": "creditCard"
+          },
+          "toCurrencyValue": {
+            "type": "number",
+            "format": "double",
+            "description": "value of the to currency",
+            "readOnly": true
+          },
+          "rate": {
+            "type": "number",
+            "format": "double",
+            "description": "conversion rate",
+            "readOnly": true
+          },
+          "walletId": {
+            "type": "string",
+            "description": "crypto wallet id"
+          },
+          "emailAddress": {
+            "type": "string",
+            "description": "user email address"
+          }
+        }
+      },
+      "Rate": {
+        "type": "array",
+        "description": "rates by gateways",
+        "items": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/GatewayRate"
+            }
+          ]
+        }
+      },
+      "Id": {
+        "type": "integer",
+        "format": "int64",
+        "readOnly": true
+      }
+    },
+    "securitySchemes": {
+      "onramper_auth": {
+        "description": "Get access to data while protecting your account credentials.\nOAuth2 is also a safer and more secure way to give you access.\n",
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "http://auth.onramper.com/api/oauth/dialog",
+            "scopes": {
+              "write:session": "modify sessions in your account",
+              "read:session": "read your session"
+            }
+          }
+        }
+      },
+      "api_key": {
+        "description": "For this sample, you can use the api key `special-key` to test the authorization filters.\n",
+        "type": "apiKey",
+        "name": "api_key",
+        "in": "header"
+      }
+    },
+    "examples": {
+      "Order": {
+        "value": {
+          "quantity": 1,
+          "shipDate": "2018-10-19T16:46:45Z",
+          "status": "placed",
+          "complete": false
+        }
+      }
+    }
+  }
+}
